@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+requests
+pymongo
+spacy
+tqdm
+pydantic
+sentence-transformers
+torch
+Pillow
+python-dotenv
+PyPDF2
+python-docx
+pinecone
