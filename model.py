@@ -1,6 +1,6 @@
 import os
 import spacy
-from huggingface_hub import hf_hub_download  # Import for Hugging Face Hub
+from huggingface_hub import snapshot_download  # Use snapshot_download for full model folder
 from PyPDF2 import PdfReader
 from io import BytesIO
 from docx import Document
@@ -12,14 +12,15 @@ HUGGINGFACE_REPO = "Tirth2102/Job-Recommendation-System"  # Change to your repo
 def download_model_from_hub():
     model_dir = "./models/model-last"
     if not os.path.exists(model_dir):
-        model_path = hf_hub_download(
+        model_path = snapshot_download(
             repo_id=HUGGINGFACE_REPO,
-            filename="model-last",  # Folder name on Hugging Face
-            cache_dir="./models"   # Local cache directory
+            cache_dir="./models"  # Local cache directory
         )
+        print("✅ Model downloaded from Hugging Face Hub.")
     else:
         model_path = model_dir
-
+        print("✅ Model loaded from local cache.")
+    
     # Load the spaCy model
     return spacy.load(model_path)
 
