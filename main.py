@@ -51,18 +51,18 @@ from pydantic import BaseModel
 class DataSchema(BaseModel):
     user_id: str
     resume_id:str
-    page: int
-    limit: int
+    # page: int
+    # limit: int
     
 @app.post("/recommendations")
 def get_recommendations(
     # doc_id: str, 
     # page: int = Query(1, gt=0, description="Page number (starting from 1)"),
     # limit: int = Query(10, gt=0, le=50, description="Number of jobs per page (default 10, max 50)")
-    user_id:str,
     resume_id:str,
-    page:int,
-    limit:int,
+    user_id:str,
+    # page:int,
+    # limit:int,
     background_tasks: BackgroundTasks
     
 
@@ -94,7 +94,7 @@ def get_recommendations(
     extracted_skills = extract_skills_from_resume(file_url, filename)
     
     # Get job recommendations with pagination
-    recommendations = query_with_metadata(extracted_skills, page=page, limit=limit)
+    recommendations = query_with_metadata(extracted_skills, page=1, limit=10)
     background_tasks.add_task(save_matches_in_background, user_id, resume_id, recommendations)
     return {"status": 200,"resume_id":resume_id,"user_id":user_id, "recommendations": recommendations}
 
@@ -122,4 +122,4 @@ def save_matches_in_background(user_id, resume_id, recommendations):
 import uvicorn
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
